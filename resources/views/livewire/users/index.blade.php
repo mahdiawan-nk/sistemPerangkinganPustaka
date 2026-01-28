@@ -102,6 +102,25 @@
 
         <livewire:users.create wire:key="create-users" />
         <livewire:users.update :user="$selectedId" wire:key="update-users-{{ $selectedId }}" />
+        <flux:modal name="confirm" class="min-w-[22rem]">
+            <div class="space-y-6">
+                <div>
+                    <flux:heading size="lg">Delete User?</flux:heading>
+                    <flux:text class="mt-2">
+                        You're about to delete this users.<br>
+                        This action cannot be reversed.
+                    </flux:text>
+                </div>
+                <div class="flex gap-2">
+                    <flux:spacer />
+                    <flux:modal.close>
+                        <flux:button variant="ghost">Cancel</flux:button>
+                    </flux:modal.close>
+                    <flux:button type="submit" variant="danger" wire:click="deleteUser()">Delete user
+                    </flux:button>
+                </div>
+            </div>
+        </flux:modal>
 
     </div>
 </div>

@@ -7,6 +7,7 @@ use Livewire\WithPagination;
 use App\Models\User;
 use App\Traits\WithToast;
 use Livewire\Attributes\On;
+use Flux\Flux;
 class Index extends Component
 {
     use WithPagination, WithToast;
@@ -31,7 +32,8 @@ class Index extends Component
     public function openDelete($id)
     {
         $this->selectedId = $id;
-        $this->dispatch('open-modal', 'delete-user-modal');
+        Flux::modal('confirm')->show();
+        // $this->dispatch('open-modal', 'delete-user-modal');
     }
     public function deleteUser()
     {
@@ -45,13 +47,14 @@ class Index extends Component
             }
             $this->selectedId = null;
         }
-        $this->dispatch('close-modal', 'delete-user-modal');
+        Flux::modal('confirm')->close();
     }
 
     #[On('refreshUsers')]
     public function query()
     {
         return User::query()
+            ->where('id', '!=', auth()->user()->id)
             ->where('name', 'like', '%' . $this->search . '%')
             ->orWhere('email', 'like', '%' . $this->search . '%')
             ->paginate($this->perPage);
